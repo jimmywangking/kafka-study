@@ -1,0 +1,23 @@
+services:
+  myzoo:
+    image: wurstmeister/zookeeper
+    hostname: localhost
+    ports:
+    - "2181:2181"
+    container_name: myzoo
+
+  mykafka:
+    image: wurstmeister/kafka
+    hostname: localhost
+    ports:
+    - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ZOOKEEPER_CONNECT: "localhost:2181"
+      KAFKA_BROKER_ID: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CREATE_TOPICS: "test_topic"
+    depends_on:
+      - myzoo
+    container_name: mykafka
+
